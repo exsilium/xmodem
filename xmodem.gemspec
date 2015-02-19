@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jonno Downes", "Sten Feldman"]
   spec.email         = ["exile@chamber.ee"]
   spec.summary       = %q{A pure XMODEM implementation in Ruby for sender and receiver. Compatible with Ruby 1.9.3+}
-  #spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "https://github.com/exsilium/xmodem"
   spec.license       = "Mozilla Public License 1.1"
 
