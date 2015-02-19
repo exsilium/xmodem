@@ -21,6 +21,8 @@ Gem::Specification.new do |spec|
   spec.rdoc_options  = %w(--charset=UTF-8)
   spec.extra_rdoc_files = %w(LICENSE.txt doc/xmodem.txt doc/xmodem1k.txt doc/xmodmcrc.txt doc/ymodem.txt)
 
+  spec.add_runtime_dependency "log4r"
+
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "VersionCheck", "~> 1.0.0"
