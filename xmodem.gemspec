@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jonno Downes", "Sten Feldman"]
   spec.email         = ["exile@chamber.ee"]
   spec.summary       = %q{A pure XMODEM implementation in Ruby for sender and receiver. Compatible with Ruby 1.9.3+}
+  spec.description   = %q{A simple gem for XMODEM client and server application. Forked from modem_protocols and made to work with newer Rubies. Today the XMODEM protocol is widely used in embedded systems for OTA application firmware transfer.}
   spec.homepage      = "https://github.com/exsilium/xmodem"
   spec.license       = "Mozilla Public License 1.1"
 
@@ -21,13 +22,13 @@ Gem::Specification.new do |spec|
   spec.rdoc_options  = %w(--charset=UTF-8)
   spec.extra_rdoc_files = %w(LICENSE.txt doc/xmodem.txt doc/xmodem1k.txt doc/xmodmcrc.txt doc/ymodem.txt)
 
-  spec.add_runtime_dependency "log4r"
+  spec.add_runtime_dependency "log4r", "~> 0"
 
-  spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "VersionCheck", "~> 1.0.0"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "minitest"
-  spec.add_development_dependency "minitest-reporters"
-  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "bundler",            "~> 1.6"
+  spec.add_development_dependency "rake",               "~> 0"
+  spec.add_development_dependency "VersionCheck",       "~> 1.0.0"
+  spec.add_development_dependency "simplecov",          "~> 0"
+  spec.add_development_dependency "minitest",           "~> 0"
+  spec.add_development_dependency "minitest-reporters", "~> 0"
+  spec.add_development_dependency "coveralls",          "~> 0"
 end
