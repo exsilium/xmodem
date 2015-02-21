@@ -1,5 +1,10 @@
 ## Synopsis
 
+[![Build Status](https://travis-ci.org/exsilium/xmodem.svg?branch=master)](https://travis-ci.org/exsilium/xmodem)
+[![Coverage Status](https://coveralls.io/repos/exsilium/xmodem/badge.svg)](https://coveralls.io/r/exsilium/xmodem)
+[![Dependency Status](https://gemnasium.com/exsilium/xmodem.svg)](https://gemnasium.com/exsilium/xmodem)
+[![Code Climate](https://codeclimate.com/github/exsilium/xmodem/badges/gpa.svg)](https://codeclimate.com/github/exsilium/xmodem)
+
 A pure XMODEM implementation in Ruby for sender and receiver. Compatible with Ruby 1.9.3+
 
 ## Code Example
