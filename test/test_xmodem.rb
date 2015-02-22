@@ -227,7 +227,7 @@ class XmodemTests < MiniTest::Test
 
   # Test cases
   def test_version
-    assert_equal("0.1.0", ::XMODEM::VERSION)
+    assert_equal("0.1.1", ::XMODEM::VERSION)
   end
 
   def test_checksum

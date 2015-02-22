@@ -3,26 +3,19 @@
 #
 # License::   Mozilla Public License 1.1
 #
-# Doesn't seem to work for me using Ruby 2.0 - BORKEN unless fixed
-#
-# Public interface changes:
-# - ModemProtocols renamed to XMODEM
-# - xmodem_tx renamed to send
-# - xmodem_rx renamed to receive
-# - Logger outputs reflect the actors sender/receiver
 
 require 'log4r'
 include Log4r
 
 module XMODEM
 
-  XMODEM_BLOCK_SIZE = 128  #how many bytes (ecluding header & checksum) in each block?
   XMODEM_MAX_TIMEOUTS = 5  #how many timeouts in a row before the sender gives up?
   XMODEM_MAX_ERRORS = 10   #how many errors on a single block before the receiver gives up?
-
   XMODEM_CRC_ATTEMPTS = 3  #how many times should receiver attempt to use CRC?
   LOG_NAME='XModem'
-  @timeout_seconds = 5.0  #default timeout period
+
+  @timeout_seconds = 5.0   #default timeout period
+  @block_size = 128        #how many bytes (excluding header & checksum) in each block?
 
   #how long does the protocol wait before giving up?
   def XMODEM::timeout_seconds
@@ -30,7 +23,16 @@ module XMODEM
   end
 
   def XMODEM::timeout_seconds=(val)
-    @timeout_seconds=val
+    @timeout_seconds = val
+  end
+
+  #how long does the protocol wait before giving up?
+  def XMODEM::block_size
+    @block_size
+  end
+
+  def XMODEM::block_size=(val)
+    @block_size = val
   end
 
   # receive a file using XMODEM protocol (block size = 128 bytes)
@@ -103,7 +105,7 @@ module XMODEM
           local<<last_block
           last_block=""
         end
-        XMODEM_BLOCK_SIZE.times do
+        block_size.times do
           b=(receive_getbyte(remote))
           data<<b
           Thread.pass
@@ -161,7 +163,7 @@ module XMODEM
     current_block=""
     sent_eot=false
 
-    XMODEM_BLOCK_SIZE.times do
+    block_size.times do
       b=(local.eof? ?  FILLER : local.getc)
       current_block<<b.chr
       Thread.pass
@@ -180,7 +182,7 @@ module XMODEM
         break
       end
       tx_cmd=remote.getc.ord
-      logger.debug "sendder: got 0x#{"%x" % tx_cmd}"
+      logger.debug "sender: got 0x#{"%x" % tx_cmd}"
       if tx_cmd==ACK then
         if sent_eot then
           logger.debug "sender: got ACK of EOT"
@@ -195,7 +197,7 @@ module XMODEM
         end
         block_number=((block_number+1)%0x100)
         current_block=""
-        XMODEM_BLOCK_SIZE.times do
+        block_size.times do
           b=(local.eof? ?  FILLER : local.getc)
           current_block<<b
           Thread.pass
@@ -231,7 +233,7 @@ module XMODEM
   #calculate an 8-bit XMODEM checksum
   #this is just the sum of all bytes modulo 0x100
   def XMODEM::checksum(block)
-    raise RXChecksumError.new("checksum requested of invalid block {size should be #{XMODEM_BLOCK_SIZE}, was #{block.length}") unless block.length==XMODEM_BLOCK_SIZE
+    raise RXChecksumError.new("checksum requested of invalid block {size should be #{block_size}, was #{block.length}") unless block.length==block_size
     checksum=0
     block.each_byte do |b|
       checksum = (checksum+b) % 0x100
@@ -242,7 +244,7 @@ module XMODEM
   #calculate a 16-bit  CRC
   def XMODEM::ccitt16_crc(block)
     # cribbed from http://www.hadermann.be/blog/32/ruby-crc16-implementation/
-    raise RXChecksumError.new("checksum requested of invalid block {size should be #{XMODEM_BLOCK_SIZE}, was #{block.length}") unless block.length==XMODEM_BLOCK_SIZE
+    raise RXChecksumError.new("checksum requested of invalid block {size should be #{block_size}, was #{block.length}") unless block.length==block_size
     crc=0
     block.each_byte{|x| crc = ((crc<<8) ^ CCITT_16[(crc>>8) ^ x])&0xffff}
     crc
